@@ -1,10 +1,17 @@
-import requests
 import hashlib
 import sys
+from pip._internal import main as pipmain
 
 
 def request_api_data(query_char):
     url = "https://api.pwnedpasswords.com/range/" + query_char
+    while True:
+        try:
+            import requests
+        except ModuleNotFoundError:
+            pipmain(["install", "requests"])
+        else:
+            break
     res = requests.get(url)
     if res.status_code != 200:
         raise RuntimeError(f"Error fetching: {res.status_code}, check api and try again")
